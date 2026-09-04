@@ -1,0 +1,10 @@
+# Core Computer Vision & Machine Learning
+opencv-python>=4.8.0
+mediapipe==0.10.14
+numpy>=1.24.0
+onnxruntime>=1.15.0
+pillow>=9.5.0
+pyyaml>=6.0
+
+# Testing & Utilities
+pytest>=7.0.0

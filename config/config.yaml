@@ -1,0 +1,73 @@
+# Real-Time Context-Aware Assistive Vision System Configuration
+
+system:
+  name: "AssistiveVisionSystem"
+  debug_mode: true
+  device_target: "auto"  # "auto", "pi5", "desktop"
+
+camera:
+  source: 0  # 0 for default camera, string path for video file or v4l2 device
+  width: 640
+  height: 480
+  fps: 30
+  flip_h: false
+  flip_v: false
+  use_picamera2: false  # Auto-detected on Pi 5, or set explicitly
+
+face:
+  min_detection_confidence: 0.5
+  model_selection: 0  # 0 for close range (within 2m)
+  roi_padding: 0.15
+
+emotion:
+  confidence_threshold: 0.50
+  model_path: "models/emotion/mini_xception_fer.onnx"
+  labels:
+    - "angry"
+    - "disgust"
+    - "fear"
+    - "happy"
+    - "sad"
+    - "surprise"
+    - "neutral"
+
+pose:
+  model_complexity: 0  # 0 for Lite (Pi 5 optimized)
+  min_detection_confidence: 0.5
+  min_tracking_confidence: 0.5
+  process_every_n_frames: 2
+
+seating:
+  left_boundary: 0.35   # Normalized X (0.0 to 1.0)
+  right_boundary: 0.65  # Normalized X (0.0 to 1.0)
+
+distance:
+  too_close_face_ratio: 0.35  # Bounding box width / frame width
+  too_far_face_ratio: 0.10
+
+posture:
+  shoulder_tilt_threshold: 0.06
+  lean_x_threshold: 0.10
+  slouch_head_drop_threshold: -0.05
+  persistence_seconds: 2.0
+
+attention:
+  yaw_threshold_deg: 25.0
+  pitch_threshold_deg: 20.0
+
+temporal_filter:
+  smoothing_window_sec: 1.5
+  min_confidence: 0.60
+  persistence_frames: 10
+
+decision:
+  cooldown_seconds: 5.0
+  priority:
+    - "seating"
+    - "distance"
+    - "posture"
+    - "confusion"
+
+assistance:
+  enable_display: true
+  enable_audio: false
