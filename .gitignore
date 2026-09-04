@@ -34,6 +34,8 @@ wheels/
 
 # Project specific
 EMO-Bot/
+models/*.onnx
+models/emotion/*.onnx
 .env
 *.log
 *.avi
