@@ -20,16 +20,17 @@ face:
   roi_padding: 0.15
 
 emotion:
-  confidence_threshold: 0.50
-  model_path: "models/emotion/face_model.h5"
+  confidence_threshold: 0.35
+  model_path: "models/emotion/mini_xception_fer.onnx"
   labels:
+    - "neutral"
+    - "happy"
+    - "surprise"
+    - "sad"
     - "angry"
     - "disgust"
     - "fear"
-    - "happy"
-    - "sad"
-    - "surprise"
-    - "neutral"
+    - "contempt"
 
 pose:
   model_complexity: 0  # 0 for Lite (Pi 5 optimized)

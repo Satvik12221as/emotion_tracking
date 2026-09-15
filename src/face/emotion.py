@@ -32,13 +32,14 @@ except Exception:
 
 
 DEFAULT_EMOTION_LABELS = [
+    "neutral",
+    "happy",
+    "surprise",
+    "sad",
     "angry",
     "disgust",
     "fear",
-    "happy",
-    "sad",
-    "surprise",
-    "neutral",
+    "contempt",
 ]
 
 
@@ -213,20 +214,14 @@ class EmotionEstimator:
             return np.expand_dims(normalized, axis=0)
 
     def _preprocess_onnx(self, roi: np.ndarray) -> np.ndarray:
-        """Preprocesses face crop for ONNX model (1, 1, H, W) or (1, C, H, W)."""
+        """Preprocesses face crop for FERPlus ONNX model (1, 1, 64, 64) using raw float32 [0..255]."""
         resized = cv2.resize(roi, (64, 64))
-        if self.is_grayscale:
-            if len(resized.shape) == 3 and resized.shape[2] == 3:
-                gray = cv2.cvtColor(resized, cv2.COLOR_BGR2GRAY)
-            else:
-                gray = resized
-            normalized = (gray.astype(np.float32) - 128.0) / 128.0
-            return np.expand_dims(np.expand_dims(normalized, axis=0), axis=0)
+        if len(resized.shape) == 3 and resized.shape[2] == 3:
+            gray = cv2.cvtColor(resized, cv2.COLOR_BGR2GRAY)
         else:
-            rgb = cv2.cvtColor(resized, cv2.COLOR_BGR2RGB)
-            normalized = (rgb.astype(np.float32) - 128.0) / 128.0
-            transposed = np.transpose(normalized, (2, 0, 1))
-            return np.expand_dims(transposed, axis=0)
+            gray = resized
+        float_gray = gray.astype(np.float32)
+        return np.expand_dims(np.expand_dims(float_gray, axis=0), axis=0)
 
     @staticmethod
     def _softmax(x: np.ndarray) -> np.ndarray:
