@@ -36,6 +36,7 @@ wheels/
 EMO-Bot/
 models/*.onnx
 models/emotion/*.onnx
+models/emotion/*.h5
 .env
 *.log
 *.avi
